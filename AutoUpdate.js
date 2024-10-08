@@ -42,9 +42,6 @@ function updatePreviousDayRow() {
       // Set the corresponding cell in the recommended rate column to the recommended rate if it is empty
       setValuesIfEmpty(logSheet, [RATE_COLUMN], i, recommendedRate);
 
-      // Update column R: R = Q - recommended_rate if column R is empty
-      setCalculatedValueIfEmpty(logSheet, TARGET_COLUMN, SOURCE_COLUMN, i, recommendedRate);
-
       rowUpdated = true; // Set the flag to true
       break;  // Stop after setting the matching row for yesterday
     }
@@ -68,14 +65,6 @@ function setValuesIfEmpty(sheet, columns, rowIndex, value) {
   });
 }
 
-function setCalculatedValueIfEmpty(sheet, targetColumn, sourceColumn, rowIndex, rate) {
-  var targetCell = sheet.getRange(targetColumn + rowIndex);
-  if (targetCell.getValue() === "") { // Check if the target cell is empty
-    var valueInSource = sheet.getRange(sourceColumn + rowIndex).getValue(); // Get the value from the source column
-    var newValue = valueInSource - rate; // Calculate the new value
-    targetCell.setValue(newValue); // Set the new value in the target cell
-  }
-}
 
 function updateBackgroundColor() {
   const FIRST_ROW = 6; // The first row with data
