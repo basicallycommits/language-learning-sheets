@@ -1,9 +1,11 @@
 function updatePreviousDayRow() {
-  var spreadsheetId = "1op3uW3K-6i5ANWouEFrl9-HnOZBuLO7opq124-nRfhs";
-  var logSheet = SpreadsheetApp.openById(spreadsheetId).getSheetByName("Learning Log");
-  var graphDataSheet = SpreadsheetApp.openById(spreadsheetId).getSheetByName("Graph Data");
+  const FIRST_ROW = 6; // The first row with data
+  const SPREADSHEET_ID = "1op3uW3K-6i5ANWouEFrl9-HnOZBuLO7opq124-nRfhs";
+  var logSheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName("Learning Log");
+  var graphDataSheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName("Graph Data");
   var dateColumn = "C";
   var columnsToSet = ["E", "G", "I", "K", "T", "U"]; // Columns you want to set to 0
+  var rateColumn = "P"; // Column where the recommended rate is recorded
   var today = new Date();
   today.setHours(0, 0, 0, 0); // Normalize to midnight
   
@@ -17,32 +19,26 @@ function updatePreviousDayRow() {
   var lastRow = logSheet.getLastRow();
   var rowUpdated = false; // Flag to track if a row was updated
 
-  for (var i = 15; i <= lastRow; i++) {
+  for (var i = FIRST_ROW; i <= lastRow; i++) {
     var cellDate = new Date(logSheet.getRange(dateColumn + i).getValue());
     cellDate.setHours(0, 0, 0, 0);  // Normalize the date for comparison
 
     if (cellDate.getTime() === yesterday.getTime()) {
-      // Edge case: If you're on the first row (15), don't update the previous row
-      if (i === 15) {
+      // Edge case: If you're on the first row (6), don't update the previous row
+      if (i === FIRST_ROW) {
         Logger.log("First row, no previous row to update.");
         break;
       }
 
       // Set the corresponding cells in the specified columns to 0 if they are empty
-      columnsToSet.forEach(function(column) {
-        var cell = logSheet.getRange(column + i);
-        if (cell.getValue() === "") { // Check if the cell is empty
-          cell.setValue(0);
-        }
-      });
-      
-      // Update column O: O = N - recommended_rate if column O is empty
-      var cellO = logSheet.getRange("O" + i);
-      if (cellO.getValue() === "") { // Check if column O is empty
-        var valueInN = logSheet.getRange("N" + i).getValue(); // Get the value from column N
-        var newValueInO = valueInN - recommendedRate; // Calculate the new value for column O
-        cellO.setValue(newValueInO); // Set the new value in column O
-      }
+      setValuesIfEmpty(logSheet, columnsToSet, i, 0);
+
+      // Set the corresponding cell in the recommended rate column to the recommended rate if it is empty
+      setValuesIfEmpty(logSheet, [rateColumn], i, recommendedRate);
+
+      // Update column R: R = Q - recommended_rate if column R is empty
+      setCalculatedValueIfEmpty(logSheet, "R", "Q", i, recommendedRate);
+
 
       rowUpdated = true; // Set the flag to true
       break;  // Stop after setting the matching row for yesterday
@@ -54,6 +50,26 @@ function updatePreviousDayRow() {
     Logger.log("Columns updated for yesterday's date and column O updated.");
   } else {
     Logger.log("No matching date found for yesterday.");
+  }
+}
+
+
+function setValuesIfEmpty(sheet, columns, rowIndex, value) {
+  // Set the corresponding cells in the specified columns to the given value if they are empty
+  columns.forEach(function(column) {
+    var cell = sheet.getRange(column + rowIndex);
+    if (cell.getValue() === "") { // Check if the cell is empty
+      cell.setValue(value);
+    }
+  });
+}
+
+function setCalculatedValueIfEmpty(sheet, targetColumn, sourceColumn, rowIndex, rate) {
+  var targetCell = sheet.getRange(targetColumn + rowIndex);
+  if (targetCell.getValue() === "") { // Check if the target cell is empty
+    var valueInSource = sheet.getRange(sourceColumn + rowIndex).getValue(); // Get the value from the source column
+    var newValue = valueInSource - rate; // Calculate the new value
+    targetCell.setValue(newValue); // Set the new value in the target cell
   }
 }
 
@@ -76,7 +92,7 @@ function updateBackgroundColor() {
   // Store yesterday's row index
   var yesterdayRow = -1;
 
-  for (var i = 15; i <= lastRow; i++) {
+  for (var i = FIRST_ROW; i <= lastRow; i++) {
     var cellDate = new Date(sheet.getRange(dateColumn + i).getValue());
     cellDate.setHours(0, 0, 0, 0); // Normalize the date for comparison
 
