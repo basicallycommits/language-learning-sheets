@@ -4,7 +4,7 @@ function updatePreviousDayRowTest() {
     const LOG_SHEET_NAME = "Learning Log";
     const GRAPH_DATA_SHEET_NAME = "Graph Data";
     const DATE_COLUMN = "C";
-    const COLUMNS_TO_SET = ["E", "G", "I", "K", "T", "U"]; // Columns you want to set to 0
+    const COLUMNS_TO_SET = ["E", "G", "I", "K", "U", "V"]; // Columns you want to set to 0
     const RATE_COLUMN = "P"; // Column where the recommended rate is recorded
     const TARGET_COLUMN = "R"; // Target column for calculated value
     const SOURCE_COLUMN = "Q"; // Source column for calculation
