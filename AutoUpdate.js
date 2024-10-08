@@ -6,8 +6,6 @@ function updatePreviousDayRow() {
   const DATE_COLUMN = "C";
   const COLUMNS_TO_SET = ["E", "G", "I", "K", "U", "V"]; // Columns you want to set to 0
   const RATE_COLUMN = "P"; // Column where the recommended rate is recorded
-  const TARGET_COLUMN = "R"; // Target column for calculated value (NC Surplus)
-  const SOURCE_COLUMN = "Q"; // Source column for calculation (New Cards)
   
   var logSheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(LOG_SHEET_NAME);
   var graphDataSheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(GRAPH_DATA_SHEET_NAME);
