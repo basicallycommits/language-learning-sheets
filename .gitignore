@@ -1,0 +1,18 @@
+# Ignore the clasp configuration file
+.clasp.json
+
+# Ignore node_modules
+node_modules/
+
+# Ignore log files
+*.log
+
+# Ignore temporary files
+*.tmp
+
+# Ignore VS Code settings
+.vscode/
+
+# Ignore OS-generated files
+.DS_Store
+Thumbs.db
