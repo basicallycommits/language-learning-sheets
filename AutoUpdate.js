@@ -114,9 +114,3 @@ function updateBackgroundColor() {
     sheet.getRange("A" + yesterdayRow + ":C" + yesterdayRow).setBackground(null); // Reset to default
   }
 }
-
-// Run the update function immediately for testing
-function testUpdate() {
-  updatePreviousDayRow();
-  updateBackgroundColor();
-}
