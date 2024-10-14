@@ -5,7 +5,6 @@ function updatePreviousDayRow() {
   const GRAPH_DATA_SHEET_NAME = "Graph Data";
   const DATE_COLUMN = "C";
   const COLUMNS_TO_SET = ["E", "G", "I", "K", "U", "V"]; // Columns you want to set to 0
-  const RATE_COLUMN = "P"; // Column where the recommended rate is recorded
   
   var logSheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(LOG_SHEET_NAME);
   var graphDataSheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(GRAPH_DATA_SHEET_NAME);
@@ -16,9 +15,6 @@ function updatePreviousDayRow() {
   // Get yesterday's date
   var yesterday = new Date(today);
   yesterday.setDate(today.getDate() - 1); // Go back one day
-
-  // Get the value of the named range "recommended_rate" from the Graph Data sheet
-  var recommendedRate = graphDataSheet.getRange("recommended_rate").getValue();
 
   var lastRow = logSheet.getLastRow();
   var rowUpdated = false; // Flag to track if a row was updated
@@ -36,9 +32,6 @@ function updatePreviousDayRow() {
 
       // Set the corresponding cells in the specified columns to 0 if they are empty
       setValuesIfEmpty(logSheet, COLUMNS_TO_SET, i, 0);
-
-      // Set the corresponding cell in the recommended rate column to the recommended rate if it is empty
-      setValuesIfEmpty(logSheet, [RATE_COLUMN], i, recommendedRate);
 
       rowUpdated = true; // Set the flag to true
       break;  // Stop after setting the matching row for yesterday
