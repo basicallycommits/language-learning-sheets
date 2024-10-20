@@ -1,13 +1,11 @@
 function updatePreviousDayRow() {
   const FIRST_ROW = 6; // The first row with data
   const SPREADSHEET_ID = "1op3uW3K-6i5ANWouEFrl9-HnOZBuLO7opq124-nRfhs";
-  const LOG_SHEET_NAME = "Learning Log";
-  const GRAPH_DATA_SHEET_NAME = "Graph Data";
+  const LOG_SHEET_NAME = "Anki Log";
   const DATE_COLUMN = "C";
   const COLUMNS_TO_SET = ["E", "G", "I", "K", "U", "V"]; // Columns you want to set to 0
   
   var logSheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(LOG_SHEET_NAME);
-  var graphDataSheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(GRAPH_DATA_SHEET_NAME);
   
   var today = new Date();
   today.setHours(0, 0, 0, 0); // Normalize to midnight
@@ -54,43 +52,4 @@ function setValuesIfEmpty(sheet, columns, rowIndex, value) {
       cell.setValue(value);
     }
   });
-}
-
-
-function updateBackgroundColor() {
-  const FIRST_ROW = 6; // The first row with data
-  const SPREADSHEET_ID = "1op3uW3K-6i5ANWouEFrl9-HnOZBuLO7opq124-nRfhs"; 
-  const SHEET_NAME = "Learning Log";
-  const DATE_COLUMN = "C"; // Column where dates are stored
-  const GOLDEN_YELLOW = '#FFD700';
-  
-  var sheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(SHEET_NAME);
-  var today = new Date();
-  today.setHours(0, 0, 0, 0); // Normalize to midnight
-
-  var yesterday = new Date(today);
-  yesterday.setDate(today.getDate() - 1); // Get yesterday's date
-
-  var lastRow = sheet.getLastRow();
-  
-  // Store yesterday's row index
-  var yesterdayRow = -1;
-
-  for (var i = FIRST_ROW; i <= lastRow; i++) {
-    var cellDate = new Date(sheet.getRange(DATE_COLUMN + i).getValue());
-    cellDate.setHours(0, 0, 0, 0); // Normalize the date for comparison
-
-    if (cellDate.getTime() === yesterday.getTime()) {
-      // Store the row index for yesterday to reset its background color later
-      yesterdayRow = i;
-    } else if (cellDate.getTime() === today.getTime()) {
-      // Update background color for today's row
-      sheet.getRange("A" + i + ":C" + i).setBackground(GOLDEN_YELLOW);
-    }
-  }
-
-  // Reset the background color for yesterday's row if it was found
-  if (yesterdayRow !== -1) {
-    sheet.getRange("A" + yesterdayRow + ":C" + yesterdayRow).setBackground(null); // Reset to default
-  }
 }
