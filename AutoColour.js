@@ -40,4 +40,7 @@ function updateBackgroundColor() {
   
   // Update "Immersion" sheet (dates start at row 5)
   updateBackgroundColorForSheet("Immersion", 5, "C", GOLDEN_YELLOW);
+
+  // Update "Other Log" sheet (dates start at row 5)
+  updateBackgroundColorForSheet("Other Log", 4, "C", GOLDEN_YELLOW);
 }
