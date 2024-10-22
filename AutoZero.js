@@ -3,7 +3,7 @@ function updatePreviousDayRow() {
   const SPREADSHEET_ID = "1op3uW3K-6i5ANWouEFrl9-HnOZBuLO7opq124-nRfhs";
   const LOG_SHEET_NAME = "Anki Log";
   const DATE_COLUMN = "C";
-  const COLUMNS_TO_SET = ["E", "G", "I", "K", "U", "V"]; // Columns you want to set to 0
+  const COLUMNS_TO_SET = ["G", "I", "K", "M", "W", "X"]; // Columns you want to set to 0
   
   var logSheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(LOG_SHEET_NAME);
   
